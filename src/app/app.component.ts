@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GraphComponent } from './graph/graph.component';
+import { EssearchService } from './essearch.service';
 
 @Component({
   selector: 'app-root',
@@ -31,15 +31,16 @@ export class AppComponent implements OnInit{
         {data: {source: 'g', target: 'j', faveColor: '#F5A45D'}}
     ]
 };
-  _options = { headers: new HttpHeaders({ 'Content-Type': 'application/json'
-  , 'Authorization': 'Basic ' + btoa("tamas" + ":" + "53yxUsbQYLRoVy6"),
-  'Access-Control-Request-Headers': 'authorization, content-type', 'Origin': '*'}) };
-  constructor(private http: HttpClient){
+
+  constructor( private essearch: EssearchService){
   }
   ngOnInit(): void {
     console.log("Init");
-    this.http.get('http://localhost:9200/estc/_search?pretty=true&q=manualTags:W.%20Gillman*&size=500',this._options).subscribe(data => {
-      console.log(data);
-    });
+    this.essearch.test()
+    this.essearch.doSearch().then()
+      //function (val) { console.log(val);})
+  }
+  tt(){
+
   }
 }

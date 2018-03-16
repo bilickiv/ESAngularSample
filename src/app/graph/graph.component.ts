@@ -1,15 +1,12 @@
 import { Component, AfterContentInit,OnInit, Inject, OnChanges, ElementRef, Input  } from '@angular/core';
 import * as variable from 'cytoscape';
+
 declare var jQuery: any;
 
 @Component({
   selector: 'app-graph',
-  template: '<div id="cy">tt</div> Hehe',
-    styles: [`#cy {
-      width: 300px;
-      height: 300px;
-      display: block;
-    }`]
+  templateUrl: './graph.component.html',
+  styleUrls: ['./graph.component.css']
 })
 export class GraphComponent implements AfterContentInit,OnInit, OnChanges {
   @Input() public elements: any;
@@ -17,6 +14,7 @@ export class GraphComponent implements AfterContentInit,OnInit, OnChanges {
   @Input() public layout: any;
   @Input() public zoom: any;
   node: string;
+
   constructor(private el: ElementRef) {
     this.layout = this.layout || {
       name: 'grid',
@@ -102,7 +100,6 @@ export class GraphComponent implements AfterContentInit,OnInit, OnChanges {
     });
   console.log(g)
   console.log('After render')
-
 }
 
 }

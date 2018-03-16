@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { GraphComponent } from './graph/graph.component';
+import { EssearchService } from './essearch.service';
 
 
 @NgModule({
@@ -15,7 +16,7 @@ import { GraphComponent } from './graph/graph.component';
     BrowserModule,
     HttpClientModule
     ],
-  providers: [],
+  providers: [EssearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
