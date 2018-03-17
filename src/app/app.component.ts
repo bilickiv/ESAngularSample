@@ -37,10 +37,10 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     console.log("Init");
     this.essearch.test()
-    this.essearch.doSearch().then()
+    this.essearch.doSearch().then(this.tt)
       //function (val) { console.log(val);})
   }
-  tt(){
-
+  tt(result:Array<any>){
+    console.log(result.length)
   }
 }

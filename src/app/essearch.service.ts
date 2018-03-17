@@ -29,39 +29,24 @@ export class EssearchService {
         console.log(data);
       });
   }
-  getNodesAndEdges = (response) => {
-    return new Promise((resolve, reject) => {
-      console.log('HERE')
-      this.resultJSONarray.push(response)
-      //initialiseNodesAndEdges(response);
-      //console.log(JSON.stringify(response, null, 2))
-      console.log(response.hits.total)
-      this.counter += response.hits.hits.length;
-      if (response.hits.total !== this.counter) {
-        this.client.scroll({
-          scrollId: response._scroll_id,
-          scroll: "30s"
-        }).then(this.getNodesAndEdges, function (error) {
-          reject(error.message)
-          console.trace(error.message);
-        })
-      } else {
-        resolve();
-        //drawFullGraph()
-      }
-    });
-  };
-
-  doSearch() {
-    return new Promise((resolve, reject) => {
-      this.client.search({
-        "index": this.connIndex["index"],
-        "scroll": "30s",
-        "_source": this.source
-      }).then(this.getNodesAndEdges, function (error) {
-        console.trace(error.message);
-      }
-      ).then(resolve())
+  async doSearch():Promise<Array<any>> {
+    let response: any
+    response = await this.client.search({
+      "index": this.connIndex["index"],
+      "scroll": "30s",
+      "_source": this.source
     })
+    this.counter += response.hits.hits.length;
+    this.resultJSONarray.push(response)
+    while(response.hits.total !== this.counter){
+        response = await this.client.scroll({
+        scrollId: response._scroll_id,
+        scroll: "30s"
+      })
+      this.resultJSONarray.push(response)
+      this.counter += response.hits.hits.length;
+      console.log(this.counter)
+    }
+    return this.resultJSONarray
   }
 }
