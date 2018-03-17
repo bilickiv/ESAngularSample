@@ -9,7 +9,7 @@ import { EssearchService } from './essearch.service';
 })
 export class AppComponent implements OnInit{
   title = 'app';
-  graphData = {
+  graphData: any = {
     nodes: [
         {data: {id: 'j', name: 'Jerry', faveColor: '#6FB1FC', faveShape: 'triangle'}},
         {data: {id: 'e', name: 'Elaine', faveColor: '#EDA1ED', faveShape: 'ellipse'}},
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit{
         {data: {source: 'g', target: 'j', faveColor: '#F5A45D'}}
     ]
 };
-
+style: any
   constructor( private essearch: EssearchService){
   }
   ngOnInit(): void {
@@ -40,7 +40,9 @@ export class AppComponent implements OnInit{
     this.essearch.doSearch().then(this.tt)
       //function (val) { console.log(val);})
   }
-  tt(result:Array<any>){
-    console.log(result.length)
+  tt = (result:any)=>{
+    console.log("In TT")
+    //this.graphData = result
+    console.log(JSON.stringify(result))
   }
 }

@@ -2,8 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Network</title>
-  <script src="../static/node_modules/cytoscape/cytoscape.min.js"></script>
-  <script src="../static/node_modules/elasticsearchjs/elasticsearch.js"></script>
+
   <style>
       #networkDiv {
           width: 100%;
@@ -30,7 +29,7 @@
 
 <body>
  Here it is
-  <app-graph [elements]="graphData"></app-graph>
+  <app-graph [elements]="graphData" [style]="style"></app-graph>
 -----
 <div id="networkDiv"></div>
 <div id="help">

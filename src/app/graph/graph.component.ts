@@ -13,19 +13,20 @@ export class GraphComponent implements AfterContentInit,OnInit, OnChanges {
   @Input() public style: any;
   @Input() public layout: any;
   @Input() public zoom: any;
+
   node: string;
 
   constructor(private el: ElementRef) {
-    this.layout = this.layout || {
-      name: 'grid',
-      directed: true,
-      padding: 0
-  };
+    this.layout = this.layout ||
+      {
+        "name": "preset",
+        "fit": true
+    };
 
 
   this.zoom = this.zoom || {
-      min: 0.1,
-      max: 1.5
+      min: 2 / 11,
+      max: 5
   };
 
   this.style = this.style || cytoscape.stylesheet()

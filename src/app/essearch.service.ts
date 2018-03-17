@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from 'elasticsearch'
+import { initialiseNodesAndEdges, nodes, edges, edgeStyles, nodeStyles, elements, bookseller } from './aupubnetwork'
+
 @Injectable()
 export class EssearchService {
   clientConfig = {
     host: "http://localhost:9200/"
   };
+  elements: any;
+  bookseller = false
+  pub: any
   source = ["authors"];
+
   counter = 0;
   client = new Client(this.clientConfig);
   resultJSONarray = []
@@ -29,8 +35,11 @@ export class EssearchService {
         console.log(data);
       });
   }
-  async doSearch():Promise<Array<any>> {
+  public doSearch = async () => {
     let response: any
+    await this.setIndices()
+    console.log('The source')
+    console.log(this.source)
     response = await this.client.search({
       "index": this.connIndex["index"],
       "scroll": "30s",
@@ -38,15 +47,49 @@ export class EssearchService {
     })
     this.counter += response.hits.hits.length;
     this.resultJSONarray.push(response)
-    while(response.hits.total !== this.counter){
-        response = await this.client.scroll({
+    initialiseNodesAndEdges(response, this.pub, this.source, this.bookseller)
+
+    while (response.hits.total !== this.counter) {
+      response = await this.client.scroll({
         scrollId: response._scroll_id,
         scroll: "30s"
       })
+      console.log("Befere----")
+      console.log(elements)
+      initialiseNodesAndEdges(response, this.pub, this.source, this.bookseller)
+      console.log("After----")
+      console.log(elements)
+
+
       this.resultJSONarray.push(response)
       this.counter += response.hits.hits.length;
-      console.log(this.counter)
+      // console.log(this.counter)
     }
-    return this.resultJSONarray
+    return {e:elements,es:edgeStyles,ns:nodeStyles}
+  }
+  private setIndices = async () => {
+    let response: any
+    response = await this.client.indices.getMapping(this.connIndex)
+    let mapping = response[this.connIndex["index"]]["mappings"];
+   // console.log(mapping)
+    let dbType;
+    if (Object.keys(mapping).toString() === "xml") {
+      dbType = "xml";
+    } else {
+      dbType = "csv";
+    }
+    if (Object.keys(mapping[dbType]["properties"]).indexOf("publisher") > -1) {
+      this.pub = "publisher";
+    } else {
+      this.pub = "publication";
+    }
+    if (Object.keys(mapping[dbType]["properties"]).indexOf("Bookseller") > -1) {
+      this.source.push("Bookseller");
+      this.bookseller = true;
+    }
+    this.source.push(this.pub);
+
+    console.log("From setindices")
+    console.log(this.source)
   }
 }

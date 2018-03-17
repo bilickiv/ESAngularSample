@@ -1,13 +1,13 @@
 import {Client} from 'elasticsearch'
-export {document}
+export {initialiseNodesAndEdges, nodes, edges, edgeStyles, nodeStyles, elements, bookseller}
 var clientConfig = {
   host: "http://localhost:9200/"
 };
 
-var client = new elasticsearch.Client(clientConfig);
+/*var client = new elasticsearch.Client(clientConfig);
 var connIndex = {
   index: "estc_english_irish_scottish_freemasonry"
-};
+};*/
 
 var defStyle = [
   {
@@ -162,7 +162,7 @@ Set.prototype.increment = function (data) {
 };
 
 
-client.indices.getMapping(connIndex, function (error, response) {
+/*client.indices.getMapping(connIndex, function (error, response) {
   if (error) {
       console.log(error);
   } else {
@@ -189,9 +189,9 @@ client.indices.getMapping(connIndex, function (error, response) {
       doSearch();
 
   }
-});
+});*/
 
-function doSearch() {
+/*function doSearch() {
   client.search({
       "index": connIndex["index"],
       "scroll": "30s",
@@ -218,7 +218,7 @@ function doSearch() {
       }
   })
 }
-
+*/
 
 function drawFullGraph() {
 
@@ -351,7 +351,7 @@ function getNodesInPosition(collection) {
 
   var length = 0;
 
-  for (i = 0; i < collection.length; i++) {
+  for (let i = 0; i < collection.length; i++) {
 
       if (collection[i].isNode()) {
           if (collection[i].hasClass("pubs")) {
@@ -458,11 +458,17 @@ function getNodesInPosition(collection) {
   }
 }
 
-function initialiseNodesAndEdges(response) {
+var initialiseNodesAndEdges = (response, pub, source, bookseller)=> {
+  //console.log("Inside")
+  //console.log(response, pub, source, bookseller)
+
   response.hits.hits.forEach(function (hit) {
           var hitDatas = hit["_source"];
+         // console.log(hitDatas.hasOwnProperty("authors") && hitDatas.hasOwnProperty(pub))
+         // console.log(hitDatas)
           if (hitDatas.hasOwnProperty("authors") && hitDatas.hasOwnProperty(pub)) {
-              for (key in hitDatas) {
+         //   console.log("INSIDE")
+              for (var key in hitDatas) {
 
                   var newNodeFull = {
                       "data": {
@@ -499,7 +505,7 @@ function initialiseNodesAndEdges(response) {
                       nodeStyles.increment(newNodeFull["data"]);
                   }
                   else {
-                      newNodeStyle = {
+                      let newNodeStyle = {
                           "selector": "node[id=\"" + wholeData + key + "\"]",
                           "style": {
                               "height": 15,
@@ -515,7 +521,7 @@ function initialiseNodesAndEdges(response) {
                       var splittedData = deleteLastChars(hitDatas[key]).split(";");
 
 
-                      for (i = 0; i < splittedData.length; i++) {
+                      for (let i = 0; i < splittedData.length; i++) {
                           var newNode = {
                               "data": {
                                   "id": "",
@@ -550,7 +556,7 @@ function initialiseNodesAndEdges(response) {
                           }
                           else {
 
-                              newNodeStyle = {
+                              let newNodeStyle = {
                                   "selector": "node[id=\"" + data + key + "\"]",
                                   "style": {
                                       "height": 15,
@@ -570,24 +576,24 @@ function initialiseNodesAndEdges(response) {
               }
 
 
-              edgePubArray = deleteLastChars(hitDatas[pub]).split(";");
+              let edgePubArray = deleteLastChars(hitDatas[pub]).split(";");
 
-              for (i = 0; i < edgePubArray.length; i++) {
-                  publisher = deleteLastChars(edgePubArray[i]) + pub;
+              for (let i = 0; i < edgePubArray.length; i++) {
+                  let publisher = deleteLastChars(edgePubArray[i]) + pub;
 
 
-                  edgeAuArray = deleteLastChars(hitDatas["authors"]).split(";");
+                  let edgeAuArray = deleteLastChars(hitDatas["authors"]).split(";");
 
-                  for (j = 0; j < edgeAuArray.length; j++) {
-                      author = deleteLastChars(edgeAuArray[j]) + "authors";
+                  for (let j = 0; j < edgeAuArray.length; j++) {
+                      let author = deleteLastChars(edgeAuArray[j]) + "authors";
 
                       if (hitDatas.hasOwnProperty("Bookseller")) {
 
-                          edgeSellArray = deleteLastChars(hitDatas["Bookseller"]).split(";");
+                          let edgeSellArray = deleteLastChars(hitDatas["Bookseller"]).split(";");
 
-                          for (k = 0; k < edgeSellArray.length; k++) {
-                              seller = deleteLastChars(edgeSellArray[k]) + "Bookseller";
-                              newEdge1 = {
+                          for (let k = 0; k < edgeSellArray.length; k++) {
+                              let seller = deleteLastChars(edgeSellArray[k]) + "Bookseller";
+                              let newEdge1 = {
                                   "data": {
                                       "id": seller + publisher,
                                       "source": seller,
@@ -595,7 +601,7 @@ function initialiseNodesAndEdges(response) {
                                   }
                               };
 
-                              newEdge2 = {
+                              let newEdge2 = {
                                   "data": {
                                       "id": seller + author,
                                       "source": seller,
@@ -607,7 +613,7 @@ function initialiseNodesAndEdges(response) {
                                   edgeStyles.increment(newEdge1["data"]["id"]);
                               }
                               else {
-                                  newEdgeStyle = {
+                                  let newEdgeStyle = {
                                       "selector": "edge[id=\"" + seller + publisher + "\"]",
                                       "style": {
                                           "width": 1
@@ -621,7 +627,7 @@ function initialiseNodesAndEdges(response) {
 
                               }
                               else {
-                                  newEdgeStyle = {
+                                  let newEdgeStyle = {
                                       "selector": "edge[id=\"" + seller + author + "\"]",
                                       "style": {
                                           "width": 1
@@ -634,7 +640,7 @@ function initialiseNodesAndEdges(response) {
                       }
 
 
-                      newEdge = {
+                      let newEdge = {
                           "data": {
                               "id": publisher + author,
                               "source": publisher,
@@ -647,7 +653,7 @@ function initialiseNodesAndEdges(response) {
 
                       }
                       else {
-                          newEdgeStyle = {
+                          let newEdgeStyle = {
                               "selector": "edge[id=\"" + publisher + author + "\"]",
                               "style": {
                                   "width": 1
@@ -662,12 +668,12 @@ function initialiseNodesAndEdges(response) {
 
               }
 
-              edgePubFull = deleteLastChars(hitDatas[pub]) + pub;
-              edgeAuFull = deleteLastChars(hitDatas["authors"]) + "authors";
+              let edgePubFull = deleteLastChars(hitDatas[pub]) + pub;
+              let edgeAuFull = deleteLastChars(hitDatas["authors"]) + "authors";
 
 
               {
-                  newEdgeAuPub = {
+                  let newEdgeAuPub = {
                       "data":
                           {
                               "id": edgeAuFull + edgePubFull,
@@ -680,7 +686,7 @@ function initialiseNodesAndEdges(response) {
                   if (edges.has(JSON.stringify(newEdgeAuPub))) {
                       edgeStyles.increment(newEdgeAuPub["data"]["id"]);
                   } else {
-                      newEdgeStyle = {
+                      let newEdgeStyle = {
                           "selector": "edge[id=\"" + edgeAuFull + edgePubFull + "\"]",
                           "style": {
                               "width": 1
@@ -691,8 +697,8 @@ function initialiseNodesAndEdges(response) {
                   }
 
                   if (hitDatas.hasOwnProperty("Bookseller")) {
-                      edgeSellFull = deleteLastChars(hitDatas["Bookseller"]) + "Bookseller";
-                      newEdgeAuSell = {
+                      let edgeSellFull = deleteLastChars(hitDatas["Bookseller"]) + "Bookseller";
+                      let newEdgeAuSell = {
                           "data":
                               {
                                   "id": edgeAuFull + edgeSellFull,
@@ -701,7 +707,7 @@ function initialiseNodesAndEdges(response) {
                               }
                       };
 
-                      newEdgePubSell = {
+                      let newEdgePubSell = {
                           "data":
                               {
                                   "id": edgePubFull + edgeSellFull,
@@ -713,7 +719,7 @@ function initialiseNodesAndEdges(response) {
                       if (edges.has(JSON.stringify(newEdgeAuSell))) {
                           edgeStyles.increment(newEdgeAuSell["data"]["id"]);
                       } else {
-                          newEdgeStyle = {
+                          let newEdgeStyle = {
                               "selector": "edge[id=\"" + edgeAuFull + edgeSellFull + "\"]",
                               "style": {
                                   "width": 1
@@ -727,7 +733,7 @@ function initialiseNodesAndEdges(response) {
                       if (edges.has(JSON.stringify(newEdgePubSell))) {
                           edgeStyles.increment(newEdgePubSell["data"]["id"]);
                       } else {
-                          newEdgeStyle = {
+                          let newEdgeStyle = {
                               "selector": "edge[id=\"" + edgePubFull + edgeSellFull + "\"]",
                               "style": {
                                   "width": 1
@@ -742,11 +748,11 @@ function initialiseNodesAndEdges(response) {
               {
 
                   if (edgePubFull.split(";").length > 1) {
-                      localEdgePubArray = hitDatas[pub].split(";");
-                      for (i = 0; i < localEdgePubArray.length; i++) {
-                          publisher = deleteLastChars(localEdgePubArray[i]) + pub;
+                      let localEdgePubArray = hitDatas[pub].split(";");
+                      for (let i = 0; i < localEdgePubArray.length; i++) {
+                          let publisher = deleteLastChars(localEdgePubArray[i]) + pub;
 
-                          newEdge1 = {
+                          let newEdge1 = {
                               "data": {
                                   "id": edgeAuFull + publisher,
                                   "source": edgeAuFull,
@@ -759,7 +765,7 @@ function initialiseNodesAndEdges(response) {
 
                           }
                           else {
-                              newEdgeStyle = {
+                              let newEdgeStyle = {
                                   "selector": "edge[id=\"" + edgeAuFull + publisher + "\"]",
                                   "style": {
                                       "width": 1
@@ -770,7 +776,7 @@ function initialiseNodesAndEdges(response) {
                           }
 
                           if (hitDatas.hasOwnProperty("Bookseller")) {
-                              newEdge2 = {
+                              let newEdge2 = {
                                   "data": {
                                       "id": edgeSellFull + publisher,
                                       "source": edgeSellFull,
@@ -783,7 +789,7 @@ function initialiseNodesAndEdges(response) {
 
                               }
                               else {
-                                  newEdgeStyle = {
+                                  let newEdgeStyle = {
                                       "selector": "edge[id=\"" + edgeSellFull + publisher + "\"]",
                                       "style": {
                                           "width": 1
@@ -799,10 +805,10 @@ function initialiseNodesAndEdges(response) {
 
                   if (edgeAuFull.split(";").length > 1) {
                       localEdgeAuArray = hitDatas["authors"].split(";");
-                      for (i = 0; i < localEdgeAuArray.length; i++) {
-                          author = deleteLastChars(localEdgeAuArray[i]) + "authors";
+                      for (let i = 0; i < localEdgeAuArray.length; i++) {
+                          let author = deleteLastChars(localEdgeAuArray[i]) + "authors";
 
-                          newEdge1 = {
+                          let newEdge1 = {
                               "data": {
                                   "id": edgePubFull + author,
                                   "source": edgePubFull,
@@ -815,7 +821,7 @@ function initialiseNodesAndEdges(response) {
 
                           }
                           else {
-                              newEdgeStyle = {
+                              let newEdgeStyle = {
                                   "selector": "edge[id=\"" + edgePubFull + author + "\"]",
                                   "style": {
                                       "width": 1
@@ -825,7 +831,7 @@ function initialiseNodesAndEdges(response) {
                               edgeStyles.add(newEdgeStyle);
                           }
                           if (hitDatas.hasOwnProperty("Booksller")) {
-                              newEdge2 = {
+                              let newEdge2 = {
                                   "data": {
                                       "id": edgeSellFull + author,
                                       "source": edgeSellFull,
@@ -838,7 +844,7 @@ function initialiseNodesAndEdges(response) {
 
                               }
                               else {
-                                  newEdgeStyle = {
+                                  let newEdgeStyle = {
                                       "selector": "edge[id=\"" + edgeSellFull + author + "\"]",
                                       "style": {
                                           "width": 1
@@ -854,10 +860,10 @@ function initialiseNodesAndEdges(response) {
                   if (hitDatas.hasOwnProperty("Bookseller")) {
                       if (edgeSellFull.split(";").length > 1) {
                           localEdgeSellArray = hitDatas["Bookseller"].split(";");
-                          for (i = 0; i < localEdgeSellArray.length; i++) {
-                              seller = deleteLastChars(localEdgeSellArray[i]) + "Bookseller";
+                          for (let i = 0; i < localEdgeSellArray.length; i++) {
+                              let seller = deleteLastChars(localEdgeSellArray[i]) + "Bookseller";
 
-                              newEdge1 = {
+                              let newEdge1 = {
                                   "data": {
                                       "id": edgePubFull + seller,
                                       "source": edgePubFull,
@@ -865,7 +871,7 @@ function initialiseNodesAndEdges(response) {
                                   }
                               };
 
-                              newEdge2 = {
+                              let newEdge2 = {
                                   "data": {
                                       "id": edgeAuFull + seller,
                                       "source": edgeAuFull,
@@ -878,7 +884,7 @@ function initialiseNodesAndEdges(response) {
 
                               }
                               else {
-                                  newEdgeStyle = {
+                                  let newEdgeStyle = {
                                       "selector": "edge[id=\"" + edgePubFull + seller + "\"]",
                                       "style": {
                                           "width": 1
@@ -892,7 +898,7 @@ function initialiseNodesAndEdges(response) {
 
                               }
                               else {
-                                  newEdgeStyle = {
+                                  let newEdgeStyle = {
                                       "selector": "edge[id=\"" + edgeAuFull + seller + "\"]",
                                       "style": {
                                           "width": 1
@@ -909,8 +915,15 @@ function initialiseNodesAndEdges(response) {
           }
       }
   )
+  //console.log("Before configsetup")
+  //console.log(elements)
 
+  configSetup()
+  //console.log(edges)
+
+  //console.log("Finished inside")
 }
+
 
 
 function deleteLastChars(string) {
@@ -922,7 +935,7 @@ function deleteLastChars(string) {
 
 }
 
-function configSetup() {
+var configSetup = () => {
 
 
   edgeStyles.forEach(function (edgeStyle) {
@@ -937,11 +950,11 @@ function configSetup() {
       elements.push(JSON.parse(edge));
   });
 
-  for (i = 0; i < defStyle.length; i++) {
+  for (let i = 0; i < defStyle.length; i++) {
       style.push(defStyle[i]);
   }
 
-  cy2 = cytoscape();
+  let cy2 = cytoscape();
 
   nodes.forEach(function (node) {
 
@@ -955,7 +968,7 @@ function configSetup() {
       elements.push(node.json());
   });
 
-  delete cy2;
+  //delete cy2;
 
 }
 
