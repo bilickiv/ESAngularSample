@@ -1,5 +1,5 @@
 import {Client} from 'elasticsearch'
-export {initialiseNodesAndEdges, nodes, edges, edgeStyles, nodeStyles, elements, bookseller}
+export {initialiseNodesAndEdges, nodes, edges, style, elements, bookseller}
 var clientConfig = {
   host: "http://localhost:9200/"
 };

@@ -31,7 +31,7 @@ export class AppComponent implements OnInit{
         {data: {source: 'g', target: 'j', faveColor: '#F5A45D'}}
     ]
 };
-style: any
+  style: any
   constructor( private essearch: EssearchService){
   }
   ngOnInit(): void {
@@ -42,7 +42,8 @@ style: any
   }
   tt = (result:any)=>{
     console.log("In TT")
-    //this.graphData = result
-    console.log(JSON.stringify(result))
+    this.graphData = result.e
+    this.style = result.s
+    //console.log(JSON.stringify(result))
   }
 }

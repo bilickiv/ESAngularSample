@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Client } from 'elasticsearch'
-import { initialiseNodesAndEdges, nodes, edges, edgeStyles, nodeStyles, elements, bookseller } from './aupubnetwork'
+import { initialiseNodesAndEdges, nodes, edges, style, elements, bookseller } from './aupubnetwork'
 
 @Injectable()
 export class EssearchService {
@@ -65,7 +65,7 @@ export class EssearchService {
       this.counter += response.hits.hits.length;
       // console.log(this.counter)
     }
-    return {e:elements,es:edgeStyles,ns:nodeStyles}
+    return {e:elements,s:style}
   }
   private setIndices = async () => {
     let response: any
