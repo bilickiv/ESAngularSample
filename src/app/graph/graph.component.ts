@@ -26,7 +26,7 @@ export class GraphComponent {
     constructor(private essearch: EssearchService) {
     }
     ngOnInit(): void {
-      this.essearch.test()
+     // this.essearch.test()
       this.essearch.doSearch().then(this.tt)
         //function (val) { console.log(val);})
     }

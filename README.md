@@ -2,6 +2,15 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
 
+
+## Elasticsearch server
+
+run the follwing docker command:
+docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -v $(pwd)/x.txt:/usr/share/elasticsearch/config/elasticsearch.yml -v $(pwd)/data:/usr/share/elasticsearch/data docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.2
+
+This will setup the x.txt as the config file and the local data directory as the data directory
+
+The data directory is puplated wih ESTC_Freemasonry_English_Irish_Scottish_sellers_kulon_Openoffice
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

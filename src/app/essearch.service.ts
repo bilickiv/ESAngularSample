@@ -27,14 +27,14 @@ export class EssearchService {
     })
   };
   constructor(private http: HttpClient) { }
-  test(): void {
+  /*test(): void {
     console.log("Init in service");
     this.http.get('http://localhost:9200/estc/_search?pretty=true&q=manualTags:W.%20Gillman*&size=500')
       .subscribe(data => {
         console.log("The data");
         console.log(data);
       });
-  }
+  }*/
   public doSearch = async () => {
     let response: any
     await this.setIndices()
@@ -46,7 +46,7 @@ export class EssearchService {
       "_source": this.source
     })
     this.counter += response.hits.hits.length;
-    this.resultJSONarray.push(response)
+    //this.resultJSONarray.push(response)
     initialiseNodesAndEdges(response, this.pub, this.source, this.bookseller)
 
     while (response.hits.total !== this.counter) {
@@ -89,7 +89,7 @@ export class EssearchService {
     }
     this.source.push(this.pub);
 
-    console.log("From setindices")
-    console.log(this.source)
+    //console.log("From setindices")
+    //console.log(this.source)
   }
 }
