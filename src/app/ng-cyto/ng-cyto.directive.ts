@@ -81,7 +81,7 @@ export class NgCyto implements OnChanges {
 
   public ngOnChanges(): any {
     this.render();
-    console.log(this.el.nativeElement);
+    //console.log(this.el.nativeElement);
   }
 
   public render() {
@@ -160,22 +160,6 @@ export class NgCyto implements OnChanges {
           target.style("label", "");
       }
   })
-    /* cy.on('tap', 'node', function(e) {
-         var node = e.cyTarget;
-         var neighborhood = node.neighborhood().add(node);
-
-         cy.elements().addClass('faded');
-         neighborhood.removeClass('faded');
-         localselect.emit(node.data("name"));
-     });
-
-     cy.on('tap', function(e) {
-             if (e.cyTarget === cy) {
-                 cy.elements().removeClass('faded');
-             }
-     });*/
-    //drawFullGraph(cy)
-
   }
 
 }

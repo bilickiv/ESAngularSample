@@ -1,4 +1,4 @@
-# Angular 2 Cytoscape Dagre Demo
+# Angular 2 Cytoscape example
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
 

@@ -38,8 +38,8 @@ export class EssearchService {
   public doSearch = async () => {
     let response: any
     await this.setIndices()
-    console.log('The source')
-    console.log(this.source)
+    //console.log('The source')
+    //console.log(this.source)
     response = await this.client.search({
       "index": this.connIndex["index"],
       "scroll": "30s",
@@ -61,7 +61,7 @@ export class EssearchService {
       //console.log(elements)
 
 
-      this.resultJSONarray.push(response)
+     // this.resultJSONarray.push(response)
       this.counter += response.hits.hits.length;
       // console.log(this.counter)
     }
