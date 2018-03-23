@@ -1,106 +1,64 @@
-import { Component, AfterContentInit,OnInit, Inject, OnChanges, ElementRef, Input  } from '@angular/core';
-import * as variable from 'cytoscape';
-
-declare var jQuery: any;
-
+import {Component, Output, EventEmitter} from "@angular/core";
+import { EssearchService } from '../essearch.service';
 @Component({
-  selector: 'app-graph',
-  templateUrl: './graph.component.html',
-  styleUrls: ['./graph.component.css']
+    selector: 'cy-graph',
+    templateUrl: './graph.component.html',
+    styles: [`
+      ng2-cytoscape {
+        height: 100vh;
+        float: left;
+        width: 100%;
+        position: relative;
+    }`,],
 })
-export class GraphComponent implements AfterContentInit,OnInit, OnChanges {
-  @Input() public elements: any;
-  @Input() public style: any;
-  @Input() public layout: any;
-  @Input() public zoom: any;
 
-  node: string;
+export class GraphComponent {
 
-  constructor(private el: ElementRef) {
-    this.layout = this.layout ||
-      {
-        "name": "preset",
-        "fit": true
+    node_name: string;
+
+    layout = {
+      "name": "preset",
+      "fit": true
+  };
+            style: any
+   graphData = {
+            nodes: [
+                { data: { id: 'a', name: 'Signup', weight: 100, colorCode: 'blue', shapeType: 'roundrectangle' } },
+                { data: { id: 'b', name: 'User Profile', weight: 100, colorCode: 'magenta', shapeType: 'roundrectangle' } },
+                { data: { id: 'c', name: 'Billing', weight: 100, colorCode: 'magenta', shapeType: 'roundrectangle' } },
+                { data: { id: 'd', name: 'Sales', weight: 100, colorCode: 'orange', shapeType: 'roundrectangle' } },
+                { data: { id: 'e', name: 'Referral', weight: 100, colorCode: 'orange', shapeType: 'roundrectangle' } },
+                { data: { id: 'f', name: 'Loan', weight: 100, colorCode: 'orange', shapeType: 'roundrectangle' } },
+                { data: { id: 'j', name: 'Support', weight: 100, colorCode: 'red', shapeType: 'ellipse' } },
+                { data: { id: 'k', name: 'Sink Event', weight: 100, colorCode: 'green', shapeType: 'ellipse' } }
+            ],
+            edges: [
+                { data: { source: 'a', target: 'b', colorCode: 'blue', strength: 10 } },
+                { data: { source: 'b', target: 'c', colorCode: 'blue', strength: 10 } },
+                { data: { source: 'c', target: 'd', colorCode: 'blue', strength: 10 } },
+                { data: { source: 'c', target: 'e', colorCode: 'blue', strength: 10 } },
+                { data: { source: 'c', target: 'f', colorCode: 'blue', strength: 10 } },
+                { data: { source: 'e', target: 'j', colorCode: 'red', strength: 10 } },
+                { data: { source: 'e', target: 'k', colorCode: 'green', strength: 10 } }
+            ]
     };
 
-
-  this.zoom = this.zoom || {
-      min: 2 / 11,
-      max: 5
-  };
-
-  this.style = this.style || cytoscape.stylesheet()
-      .selector('node')
-      .css({
-          'content': 'data(name)',
-          'shape': 'rectangle',
-          'text-valign': 'center',
-          'background-color': 'data(faveColor)',
-          'width': '200px',
-          'height': '100px',
-          'color': 'black'
-      })
-      .selector(':selected')
-      .css({
-          'border-width': 3,
-          'border-color': '#333'
-      })
-      .selector('edge')
-      .css({
-          'label': 'data(label)',
-          'color': 'black',
-          'curve-style': 'bezier',
-          'opacity': 0.666,
-          'width': 'mapData(strength, 70, 100, 2, 6)',
-          'target-arrow-shape': 'triangle',
-          'line-color': 'data(faveColor)',
-          'source-arrow-color': 'data(faveColor)',
-          'target-arrow-color': 'data(faveColor)'
-      })
-      .selector('edge.questionable')
-      .css({
-          'line-style': 'dotted',
-          'target-arrow-shape': 'diamond'
-      })
-      .selector('.faded')
-      .css({
-          'opacity': 0.25,
-          'text-opacity': 0
-      });
-  }
-
-
-  public ngOnChanges(): any {
-    this.render();
-  }
-  public ngAfterContentInit(): any {
-   /* const tmp = document.createElement('div');
-    const el = this.el.nativeElement.cloneNode(true);
-    tmp.appendChild(el);
-    this.node = tmp.innerHTML;*/
-  }
-  ngOnInit() {
-    console.log('Before cy init')
-    //this.elements = this.graphData
-    //this.render()
-  }
-  public render() {
-    console.log('Before render')
-    let e = jQuery(this.el.nativeElement)
-    console.log('element:')
-    console.log(e)
-    console.log('element:')
-
-    let g = new cytoscape({
-      container: document.getElementById('cy'),
-      layout: this.layout,
-      minZoom: this.zoom.min,
-      maxZoom: this.zoom.max,
-      style: this.style,
-      elements: this.elements,
-    });
-  console.log(g)
-  console.log('After render')
-}
+    constructor(private essearch: EssearchService) {
+    }
+    ngOnInit(): void {
+      console.log("Init");
+      this.essearch.test()
+      this.essearch.doSearch().then(this.tt)
+        //function (val) { console.log(val);})
+    }
+    tt = (result:any)=>{
+      console.log("In TT")
+      this.graphData = result.e
+      this.style = result.s
+      //console.log(JSON.stringify(result))
+    }
+    nodeChange(event) {
+        this.node_name = event;
+    }
 
 }

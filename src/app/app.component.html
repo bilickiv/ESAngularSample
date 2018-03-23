@@ -1,43 +1,4 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<head>
-  <meta charset="UTF-8">
-  <title>Network</title>
-
-  <style>
-      #networkDiv {
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          position: absolute;
-      }
-
-      #tools {
-          position: absolute;
-          bottom: 0;
-      }
-
-      #help {
-          top: 0;
-          left: 0;
-          position: absolute;
-          background-color: lightgrey;
-      }
-  </style>
-</head>
-
-
-<body>
- Here it is
-  <app-graph [elements]="graphData" [style]="style"></app-graph>
------
-<div id="networkDiv"></div>
-<div id="help">
-</div>
-
-<div id="tools">
-  <button onclick="saveBase64AsFile()" id="downloadPictureButton">Download Network</button>
-  <button onclick="saveData()" id="downloadDataButton">Download Data</button>
-</div>
-</body>
-
+<h1>
+    {{title}}
+</h1>
+<cy-graph></cy-graph>

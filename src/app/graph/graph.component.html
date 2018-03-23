@@ -1,10 +1,8 @@
-<div id="cy">
+<div style="height: 90%; width: 80%; float: left; overflow: auto; overflow-y: hidden">
+    <ng2-cytoscape [elements]="graphData" [layout]="layout" [style]="style" (select)="nodeChange($event)"></ng2-cytoscape>
+</div>
 
-  <div id="networkDiv"></div>
-  <div id="help"></div>
-  <div id="tools">
-      <button onclick="saveBase64AsFile()" id="downloadPictureButton">Download Network</button>
-      <button onclick="saveData()" id="downloadDataButton">Download Data</button>
-  </div>
-</div> Hehe'
-
+<div style="height: 90%; width: 20%; float: left; overflow: auto; overflow-x: hidden">
+    <h1>Selected Node Name</h1>
+    <h2>{{node_name}}</h2>
+</div>

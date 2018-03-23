@@ -1,5 +1,5 @@
-import {Client} from 'elasticsearch'
-export {initialiseNodesAndEdges, nodes, edges, style, elements, bookseller}
+//import {Client} from 'elasticsearch'
+export {initialiseNodesAndEdges, nodes, edges, style, elements, bookseller, showOnlySelectedNodes, getNodesInPosition, configSetup, drawFullGraph}
 var clientConfig = {
   host: "http://localhost:9200/"
 };
@@ -220,12 +220,12 @@ Set.prototype.increment = function (data) {
 }
 */
 
-function drawFullGraph() {
+function drawFullGraph(cy) {
 
   configSetup();
 
   var bigGraphOptions = {
-      "container": document.getElementById("networkDiv"),
+      "container": cy.container,
       "elements": elements,
       "style": style,
       "boxSelectionEnabled": true,
@@ -920,7 +920,6 @@ var initialiseNodesAndEdges = (response, pub, source, bookseller)=> {
 
   configSetup()
   //console.log(edges)
-
   //console.log("Finished inside")
 }
 
@@ -935,7 +934,7 @@ function deleteLastChars(string) {
 
 }
 
-var configSetup = () => {
+let configSetup = () => {
 
 
   edgeStyles.forEach(function (edgeStyle) {
@@ -961,7 +960,7 @@ var configSetup = () => {
       cy2.add(JSON.parse(node))
 
   });
-
+  //console.log(cy2.elements())
   getNodesInPosition(cy2.elements());
 
   cy2.elements().forEach(function (node) {

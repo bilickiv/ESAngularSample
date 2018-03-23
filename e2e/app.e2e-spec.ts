@@ -1,14 +1,14 @@
-import { AppPage } from './app.po';
+import { CyDirectivePage } from './app.po';
 
-describe('eltest App', () => {
-  let page: AppPage;
+describe('cy-directive App', () => {
+  let page: CyDirectivePage;
 
   beforeEach(() => {
-    page = new AppPage();
+    page = new CyDirectivePage();
   });
 
-  it('should display welcome message', () => {
+  it('should display message saying app works', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    expect(page.getParagraphText()).toEqual('app works!');
   });
 });

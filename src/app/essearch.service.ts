@@ -54,11 +54,11 @@ export class EssearchService {
         scrollId: response._scroll_id,
         scroll: "30s"
       })
-      console.log("Befere----")
-      console.log(elements)
+      //console.log("Befere----")
+      //console.log(elements)
       initialiseNodesAndEdges(response, this.pub, this.source, this.bookseller)
-      console.log("After----")
-      console.log(elements)
+      //console.log("After----")
+      //console.log(elements)
 
 
       this.resultJSONarray.push(response)
