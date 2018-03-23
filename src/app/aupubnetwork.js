@@ -219,7 +219,7 @@ Set.prototype.increment = function (data) {
   })
 }
 */
-
+/*
 function drawFullGraph(cy) {
 
   configSetup();
@@ -307,7 +307,7 @@ function drawFullGraph(cy) {
       }
   })
 
-}
+}*/
 
 function showOnlySelectedNodes(cy) {
 
@@ -1013,7 +1013,7 @@ function saveData() {
   link.click();
 }
 
-
+/*
 function httpGetAsync(theUrl, callback) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function () {
@@ -1022,4 +1022,4 @@ function httpGetAsync(theUrl, callback) {
   };
   xmlHttp.open("GET", theUrl, true);
   xmlHttp.send(null);
-}
+}*/

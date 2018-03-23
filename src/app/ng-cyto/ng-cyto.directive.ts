@@ -40,42 +40,60 @@ export class NgCyto implements OnChanges {
 
     this.style = this.style || cytoscape.stylesheet()
 
-      .selector('node')
+      .selector('.pubs')
       .css({
-        'shape': 'data(shapeType)',
-        'width': 'mapData(weight, 40, 80, 20, 60)',
-        'content': 'data(name)',
-        'text-valign': 'center',
-        'text-outline-width': 1,
-        'text-outline-color': 'data(colorCode)',
-        'background-color': 'data(colorCode)',
-        'color': '#fff',
-        'font-size': 10
+        "background-color": "#de2222",
+        "border-color": "#000000",
+        "border-style": "solid",
+        "border-width": 1,
+        "shape": "ellipse",
+        "label": "data(name)",
+        "text-halign": "right",
+        "text-valign": "center",
+        "text-margin-x": 5
       })
-      .selector(':selected')
+      .selector('.authors')
       .css({
-        'border-width': 1,
-        'border-color': 'black'
+        "background-color": "#2222de",
+        "border-color": "#000000",
+        "border-style": "solid",
+        "border-width": 1,
+        "shape": "ellipse",
+        "label": "data(name)",
+        "text-halign": "left",
+        "text-valign": "center",
+        "text-margin-x": -5
+      })
+      .selector('.seller')
+      .css({
+        "background-color": "#22de22",
+          "border-color": "#000000",
+          "border-style": "solid",
+          "border-width": 1,
+          "shape": "ellipse",
+          "label": "data(name)",
+          "text-valign": "center",
+          "text-halign": "right",
+          "text-rotation": 45,
+          "text-margin-x": -3,
+          "text-margin-y": 14
       })
       .selector('edge')
       .css({
-        'curve-style': 'bezier',
-        'opacity': 0.666,
-        'width': 'mapData(strength, 70, 100, 2, 6)',
-        'target-arrow-shape': 'triangle',
-        'line-color': 'data(colorCode)',
-        'source-arrow-color': 'data(colorCode)',
-        'target-arrow-color': 'data(colorCode)'
+        "line-color": "#000000",
+        "curve-style": "haystack"
       })
-      .selector('edge.questionable')
+      .selector('.toNotShow')
       .css({
-        'line-style': 'dotted',
-        'target-arrow-shape': 'diamond'
-      })
-      .selector('.faded')
+        "display": "none"
+      }).selector('node:selected')
       .css({
-        'opacity': 0.25,
-        'text-opacity': 0
+        "background-color": "#ffff00",
+        "border-color": "#000000",
+        "color": "#000000"
+      }).selector('.second')
+      .css({
+        "text-valign": "bottom"
       });
   }
 
@@ -130,9 +148,9 @@ export class NgCyto implements OnChanges {
   });
   cy.on("mouseout", "node, edge", function (event) {
       let target = event.target;
-
+      //console.log(target.data("name"))
       if (target.isNode()) {
-          target.style("label", target.data.name);
+          target.style("label", target.data("name"));
           target.style("color", "black");
           target.style("font-size", 16);
 
