@@ -6,7 +6,7 @@ import { initialiseNodesAndEdges, nodes, edges, style, elements, bookseller } fr
 @Injectable()
 export class EssearchService {
   clientConfig = {
-    host: "http://localhost:9200/"
+    host: "http://tamas:53yxUsbQYLRoVy6@dighum.bibl.u-szeged.hu:8080/"
   };
   elements: any;
   bookseller = false
@@ -17,7 +17,7 @@ export class EssearchService {
   client = new Client(this.clientConfig);
   resultJSONarray = []
   connIndex = {
-    index: "estc"
+    index: "estc_english_irish_scottish_freemasonry"
   };
   _options = {
     headers: new HttpHeaders({
