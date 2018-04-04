@@ -7,6 +7,7 @@ import { initialiseNodesAndEdges, nodes, edges, style, elements, bookseller } fr
 export class EssearchService {
   clientConfig = {
     host: "http://tamas:53yxUsbQYLRoVy6@dighum.bibl.u-szeged.hu:8080/"
+    //host: "http://localhost:9200/"
   };
   elements: any;
   bookseller = false
@@ -17,7 +18,8 @@ export class EssearchService {
   client = new Client(this.clientConfig);
   resultJSONarray = []
   connIndex = {
-    index: "estc_english_irish_scottish_freemasonry"
+    index: "estc_feis_oo"
+    //index: "estc"
   };
   _options = {
     headers: new HttpHeaders({
